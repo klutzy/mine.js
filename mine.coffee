@@ -1,8 +1,5 @@
 class Minefield
     constructor: (@window, @columns, @rows, @num_mines, @max_mines=1) ->
-        @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
-        @tds = ((null for y in [1..@rows]) for x in [1..@columns])
-
         # status: 0 if started, -1 if dead, 1 if ready_to_start
         @game_status = -1
 
@@ -10,10 +7,16 @@ class Minefield
         @table = document.createElement('table')
         @table.setAttribute("class", "minetable")
 
+        @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
+        @nears = ((0 for y in [1..@rows]) for x in [1..@columns])
+
+        @tds = ((null for y in [1..@rows]) for x in [1..@columns])
+
         for y in [0..(@rows-1)]
             tr = document.createElement('tr')
             for x in [0..(@columns-1)]
                 @mines[x][y] = 0
+                @nears[x][y] = 0
 
                 td = document.createElement('td')
                 td.setAttribute("id", "x"+x+"y"+y)
@@ -43,6 +46,13 @@ class Minefield
             y = Math.floor(Math.random() * @rows)
             if @mines[x][y] < @max_mines
                 @mines[x][y] = 1
+                for nx in [(x-1)..(x+1)]
+                    for ny in [(y-1)..(y+1)]
+                        if nx == x and ny == y
+                            continue
+                        if nx >= @columns or nx < 0 or ny >= @rows or ny < 0
+                            continue
+                        @nears[nx][ny] += 1
                 num_mine_created += 1
         @game_status = 0
 
