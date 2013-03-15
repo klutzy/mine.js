@@ -50,6 +50,18 @@ class Minefield
                 num_mine_created += 1
         @game_status = 0
 
+    get_class: (x, y) ->
+        td_class = @tds[x][y].getAttribute("class")
+        if td_class == null or td_class == ""
+            null
+        td_class
+
+    set_class: (x, y, val) ->
+        if val == null
+            @tds[x][y].removeAttribute("class")
+        else
+            @tds[x][y].setAttribute("class", val)
+
     near_positions: (x, y) ->
         ret = []
         for nx in [(x-1)..(x+1)]
@@ -88,18 +100,18 @@ class Minefield
             @near_flags[nx][ny] += n
 
         if n > 0
-            @tds[x][y].setAttribute("class", "flag")
+            @set_class(x, y, "flag")
         else
-            @tds[x][y].removeAttribute("class")
+            @set_class(x, y, null)
 
     press: (x, y) ->
         if @mines[x][y] > 0
-            @tds[x][y].setAttribute("class", "mine-exploded")
+            @set_class(x, y, "mine-exploded")
             @gameover(x, y)
         else if @near_mines[x][y] == 0
-            @tds[x][y].setAttribute("class", "empty")
+            @set_class(x, y, "empty")
         else
-            @tds[x][y].setAttribute("class", "near-" + @near_mines[x][y])
+            @set_class(x, y, "near-" + @near_mines[x][y])
 
     expand: (start_x, start_y) ->
         list = [[start_x, start_y]]
@@ -109,8 +121,8 @@ class Minefield
                 return
             if @near_mines[x][y] <= @near_flags[x][y]
                 for [nx, ny] in @near_positions(x, y)
-                    td_class = @tds[nx][ny].getAttribute("class")
-                    if td_class == null or td_class == ""
+                    td_class = @get_class(nx, ny)
+                    if td_class == null
                         list.push([nx, ny])
 
     gameover: (x, y) ->
