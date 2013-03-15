@@ -79,7 +79,8 @@ class Minefield
         if @game_status == 1
             @start(x, y)
 
-        @expand(x, y)
+        if @expand(x, y) < 0
+            @gameover(x, y)
 
     on_rclick: (x, y) ->
         if @game_status < 0
@@ -106,27 +107,41 @@ class Minefield
 
     press: (x, y) ->
         if @mines[x][y] > 0
-            @set_class(x, y, "mine-exploded")
-            @gameover(x, y)
+            return -1
         else if @near_mines[x][y] == 0
             @set_class(x, y, "empty")
         else
             @set_class(x, y, "near-" + @near_mines[x][y])
+        return 0
 
     expand: (start_x, start_y) ->
         list = [[start_x, start_y]]
         while list.length > 0
             [x, y] = list.pop()
             if @press(x, y) < 0
-                return
+                return -1
             if @near_mines[x][y] <= @near_flags[x][y]
                 for [nx, ny] in @near_positions(x, y)
                     td_class = @get_class(nx, ny)
                     if td_class == null
                         list.push([nx, ny])
+        return 0
 
-    gameover: (x, y) ->
+    gameover: (fail_x, fail_y) ->
         @game_status = -1
+        for y in [0..(@rows-1)]
+            for x in [0..(@columns-1)]
+                if @mines[x][y] > 0
+                    @set_class(x, y, "mine")
+                    if fail_x == x and fail_y == y
+                        @set_class(x, y, "mine-exploded")
+                else
+                    if @flags[x][y] > 0
+                        @set_class(x, y, "mine-wrong")
+                    else if @near_mines[x][y] == 0
+                        @set_class(x, y, "empty")
+                    else
+                        @set_class(x, y, "near-" + @near_mines[x][y])
 
     stringify: ->
         JSON.stringify(@mines)
