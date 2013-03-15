@@ -68,12 +68,7 @@ class Minefield
         if @game_status == 1
             @start(x, y)
 
-        @press(x, y)
-
-        if @mines[x][y] > 0
-            @gameover(x, y)
-        else if @nears[x][y] == 0
-            @expand(x, y)
+        @expand(x, y)
 
     on_rclick: (x, y) ->
         @flag(x, y)
@@ -87,13 +82,24 @@ class Minefield
     press: (x, y) ->
         if @mines[x][y] > 0
             @tds[x][y].setAttribute("class", "mine-exploded")
+            @gameover(x, y)
         else if @nears[x][y] == 0
             @tds[x][y].setAttribute("class", "empty")
         else
             @tds[x][y].setAttribute("class", "near-" + @nears[x][y])
 
-    expand: (x, y) ->
-        # TODO
+    expand: (start_x, start_y) ->
+        list = [[start_x, start_y]]
+        while list.length > 0
+            [x, y] = list.pop()
+            @press(x, y)
+            near_flags = 0
+            # TODO count near flags
+            if @nears[x][y] == near_flags
+                for [nx, ny] in @near_positions(x, y)
+                    td_class = @tds[nx][ny].getAttribute("class")
+                    if td_class == null or td_class == ""
+                        list.push([nx, ny])
 
     gameover: (x, y) ->
         # TODO
