@@ -92,6 +92,10 @@ class Minefield
         # TODO: first click should never die
 
     flag: (x, y) ->
+        td_class = @get_class(x, y)
+        if td_class != null and td_class != "flag"
+            return
+
         n = 1
         if @flags[x][y] == @max_mines
             n = -@flags[x][y]
