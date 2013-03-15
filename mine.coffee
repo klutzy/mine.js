@@ -68,6 +68,9 @@ class Minefield
         @expand(x, y)
 
     on_rclick: (x, y) ->
+        if @game_status < 0
+            return
+
         @flag(x, y)
 
     start: (x, y) ->
