@@ -9,6 +9,8 @@ class Minefield
 
         @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
         @near_mines = ((0 for y in [1..@rows]) for x in [1..@columns])
+        @flags = ((0 for y in [1..@rows]) for x in [1..@columns])
+        @near_flags = ((0 for y in [1..@rows]) for x in [1..@columns])
 
         @tds = ((null for y in [1..@rows]) for x in [1..@columns])
 
@@ -68,13 +70,27 @@ class Minefield
         @expand(x, y)
 
     on_rclick: (x, y) ->
+        if @game_status < 0
+            return
+
         @flag(x, y)
 
     start: (x, y) ->
         # TODO: first click should never die
 
     flag: (x, y) ->
-        # TODO
+        n = 1
+        if @flags[x][y] == @max_mines
+            n = -@flags[x][y]
+
+        @flags[x][y] += n
+        for [nx, ny] in @near_positions(x, y)
+            @near_flags[nx][ny] += n
+
+        if n > 0
+            @tds[x][y].setAttribute("class", "flag")
+        else
+            @tds[x][y].removeAttribute("class")
 
     press: (x, y) ->
         if @mines[x][y] > 0
@@ -89,17 +105,16 @@ class Minefield
         list = [[start_x, start_y]]
         while list.length > 0
             [x, y] = list.pop()
-            @press(x, y)
-            near_flags = 0
-            # TODO count near flags
-            if @near_mines[x][y] == near_flags
+            if @press(x, y) < 0
+                return
+            if @near_mines[x][y] <= @near_flags[x][y]
                 for [nx, ny] in @near_positions(x, y)
                     td_class = @tds[nx][ny].getAttribute("class")
                     if td_class == null or td_class == ""
                         list.push([nx, ny])
 
     gameover: (x, y) ->
-        # TODO
+        @game_status = -1
 
     stringify: ->
         JSON.stringify(@mines)
