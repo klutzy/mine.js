@@ -15,9 +15,6 @@ class Minefield
         for y in [0..(@rows-1)]
             tr = document.createElement('tr')
             for x in [0..(@columns-1)]
-                @mines[x][y] = 0
-                @nears[x][y] = 0
-
                 td = document.createElement('td')
                 td.setAttribute("id", "x"+x+"y"+y)
                 on_click_to = (x_, y_, self) ->
