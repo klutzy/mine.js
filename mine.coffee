@@ -3,6 +3,9 @@ class Minefield
         @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
         @tds = ((null for y in [1..@rows]) for x in [1..@columns])
 
+        # status: 0 if started, -1 if dead, 1 if ready_to_start
+        @game_status = -1
+
     init_board: ->
         @table = document.createElement('table')
         @table.setAttribute("class", "minetable")
@@ -41,11 +44,35 @@ class Minefield
             if @mines[x][y] < @max_mines
                 @mines[x][y] = 1
                 num_mine_created += 1
+        @game_status = 0
 
     on_click: (x, y) ->
-        # TODO
+        if @game_status < 0
+            return
+        if @game_status == 1
+            @start(x, y)
+
+        if @mines[x][y] > 0
+            @gameover(x, y)
+        else
+            @press(x, y)
 
     on_rclick: (x, y) ->
+        @flag(x, y)
+
+    start: (x, y) ->
+        # TODO: first click should never die
+
+    flag: (x, y) ->
+        # TODO
+
+    press: (x, y) ->
+        # TODO
+
+    expand: (x, y) ->
+        # TODO
+
+    gameover: (x, y) ->
         # TODO
 
     stringify: ->
