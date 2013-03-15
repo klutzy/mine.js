@@ -14,6 +14,17 @@ class Minefield
 
                 td = document.createElement('td')
                 td.setAttribute("id", "x"+x+"y"+y)
+                on_click_to = (x_, y_, self) ->
+                    ->
+                        self.on_click(x_, y_)
+                        false
+                td.onclick = on_click_to(x, y, this)
+                on_rclick_to = (x_, y_, self) ->
+                    ->
+                        self.on_rclick(x_, y_)
+                        false
+                td.oncontextmenu = on_rclick_to(x, y, this)
+
                 @tds[x][y] = td
                 tr.appendChild(td)
 
@@ -30,6 +41,12 @@ class Minefield
             if @mines[x][y] < @max_mines
                 @mines[x][y] = 1
                 num_mine_created += 1
+
+    on_click: (x, y) ->
+        # TODO
+
+    on_rclick: (x, y) ->
+        # TODO
 
     stringify: ->
         JSON.stringify(@mines)
