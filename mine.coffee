@@ -9,6 +9,8 @@ class Minefield
 
         @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
         @near_mines = ((0 for y in [1..@rows]) for x in [1..@columns])
+        @flags = ((0 for y in [1..@rows]) for x in [1..@columns])
+        @near_flags = ((0 for y in [1..@rows]) for x in [1..@columns])
 
         @tds = ((null for y in [1..@rows]) for x in [1..@columns])
 
@@ -77,7 +79,18 @@ class Minefield
         # TODO: first click should never die
 
     flag: (x, y) ->
-        # TODO
+        n = 1
+        if @flags[x][y] == @max_mines
+            n = -@flags[x][y]
+
+        @flags[x][y] += n
+        for [nx, ny] in @near_positions(x, y)
+            @near_flags[nx][ny] += n
+
+        if n > 0
+            @tds[x][y].setAttribute("class", "flag")
+        else
+            @tds[x][y].removeAttribute("class")
 
     press: (x, y) ->
         if @mines[x][y] > 0
