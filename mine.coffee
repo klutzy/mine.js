@@ -105,7 +105,8 @@ class Minefield
         list = [[start_x, start_y]]
         while list.length > 0
             [x, y] = list.pop()
-            @press(x, y)
+            if @press(x, y) < 0
+                return
             if @near_mines[x][y] <= @near_flags[x][y]
                 for [nx, ny] in @near_positions(x, y)
                     td_class = @tds[nx][ny].getAttribute("class")
@@ -113,7 +114,7 @@ class Minefield
                         list.push([nx, ny])
 
     gameover: (x, y) ->
-        # TODO
+        @game_status = -1
 
     stringify: ->
         JSON.stringify(@mines)
