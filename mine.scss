@@ -9,6 +9,16 @@ table.minetable {
     @mixin mine-button($n) {
         background-image: url(mine.png);
         background-position: -(16px * $n) 0;
+        &:active {
+            @if $n == 0 {
+                background-image: url(mine.png);
+                background-position: -(16px * 14) 0;
+            }
+            @else {
+                background-image: url(mine.png);
+                background-position: -(16px * $n) 0;
+            }
+        }
     }
 
     td {
@@ -39,7 +49,7 @@ table.minetable {
             @include mine-button(13);
         }
 
-        &:active, &.empty {
+        &.empty {
             @include mine-button(14);
         }
     }
