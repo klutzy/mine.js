@@ -1,9 +1,46 @@
 table.minetable {
+    border-spacing: 0;
+    * {
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    @mixin mine-button($n) {
+        background-image: url(mine.png);
+        background-position: -(16px * $n) 0;
+    }
+
     td {
-        // TODO
+        width: 16px;
+        height: 16px;
+
+        @include mine-button(0);
+
         &.flag {
+            @include mine-button(1);
         }
-        &.empty {
+
+        @for $i from 1 through 8 {
+            &.near-#{$i} {
+                @include mine-button($i + 2);
+            }
+        }
+
+        &.mine {
+            @include mine-button(11);
+        }
+
+        &.mine-exploded {
+            @include mine-button(12);
+        }
+
+        &.mine-wrong {
+            @include mine-button(13);
+        }
+
+        &:active, &.empty {
+            @include mine-button(14);
         }
     }
 }
