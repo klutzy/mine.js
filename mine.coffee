@@ -46,15 +46,21 @@ class Minefield
             y = Math.floor(Math.random() * @rows)
             if @mines[x][y] < @max_mines
                 @mines[x][y] = 1
-                for nx in [(x-1)..(x+1)]
-                    for ny in [(y-1)..(y+1)]
-                        if nx == x and ny == y
-                            continue
-                        if nx >= @columns or nx < 0 or ny >= @rows or ny < 0
-                            continue
-                        @nears[nx][ny] += 1
+                for [nx, ny] in @near_positions(x, y)
+                    @nears[nx][ny] += 1
                 num_mine_created += 1
         @game_status = 0
+
+    near_positions: (x, y) ->
+        ret = []
+        for nx in [(x-1)..(x+1)]
+            for ny in [(y-1)..(y+1)]
+                if nx == x and ny == y
+                    continue
+                if nx >= @columns or nx < 0 or ny >= @rows or ny < 0
+                    continue
+                ret.push([nx, ny])
+        ret
 
     on_click: (x, y) ->
         if @game_status < 0
