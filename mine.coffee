@@ -106,9 +106,7 @@ class Minefield
         while list.length > 0
             [x, y] = list.pop()
             @press(x, y)
-            near_flags = 0
-            # TODO count near flags
-            if @near_mines[x][y] == near_flags
+            if @near_mines[x][y] == @near_flags[x][y]
                 for [nx, ny] in @near_positions(x, y)
                     td_class = @tds[nx][ny].getAttribute("class")
                     if td_class == null or td_class == ""
