@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Minesweeper</title>
+<meta charset="utf-8">
+<link href="mine.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<div id="mine-area"></div>
+
+<script src="mine.js"></script>
+<script>
+var mine_area = document.getElementById("mine-area");
+var minefield = new window.Minefield(mine_area, 40, 20, 40);
+minefield.init_board();
+minefield.init_mines();
+</script>
+
+</body>
+
+</html>
+
