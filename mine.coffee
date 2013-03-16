@@ -1,6 +1,6 @@
 class Minefield
     constructor: (@window, @columns, @rows, @num_mines, @max_mines=1) ->
-        # status: 0 if started, -1 if dead, 1 if ready_to_start
+        # status: 0 if started, -1 if dead, -2 cleared, 1 if ready_to_start
         @game_status = -1
 
     init_board: ->
@@ -161,6 +161,7 @@ class Minefield
                         @set_class(x, y, "near-" + @near_mines[x][y])
 
     gameclear: ->
+        @game_status = -2
         # TODO
 
     stringify: ->
