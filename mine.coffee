@@ -105,7 +105,7 @@ class Minefield
 
     flag: (x, y) ->
         td_class = @get_class(x, y)
-        if td_class != null and td_class != "flag"
+        if td_class != null and not /^flag/.exec(td_class)
             return
 
         n = 1
@@ -117,7 +117,7 @@ class Minefield
             @near_flags[nx][ny] += n
 
         if n > 0
-            @set_class(x, y, "flag")
+            @set_class(x, y, "flag-"+@flags[x][y])
         else
             @set_class(x, y, null)
 
@@ -155,10 +155,11 @@ class Minefield
         @game_status = -1
         for y in [0..(@rows-1)]
             for x in [0..(@columns-1)]
-                if @mines[x][y] > 0
-                    if @get_class(x, y) == "flag"
+                mine = @mines[x][y]
+                if mine > 0
+                    if /^flag/.exec(@get_class(x, y))
                         continue
-                    @set_class(x, y, "mine")
+                    @set_class(x, y, "mine-" + mine)
                     if fail_x == x and fail_y == y
                         @set_class(x, y, "mine-exploded")
                 else
