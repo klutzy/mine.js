@@ -39,12 +39,16 @@ class Minefield
         @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
         @near_mines = ((0 for y in [1..@rows]) for x in [1..@columns])
 
+        @remaining = @rows * @columns
+
         num_mine_created = 0
         while num_mine_created < @num_mines
             # infinite loop with probability 0
             x = Math.floor(Math.random() * @columns)
             y = Math.floor(Math.random() * @rows)
             if @mines[x][y] < @max_mines
+                if @mines[x][y] == 0
+                    @remaining -= 1
                 @mines[x][y] += 1
                 for [nx, ny] in @near_positions(x, y)
                     @near_mines[nx][ny] += 1
@@ -83,6 +87,9 @@ class Minefield
         if @expand(x, y) < 0
             @gameover(x, y)
 
+        if @remaining == 0
+            @gameclear()
+
     on_rclick: (x, y) ->
         if @game_status < 0
             return
@@ -113,6 +120,8 @@ class Minefield
     press: (x, y) ->
         if @mines[x][y] > 0
             return -1
+        else if @get_class(x, y) != null
+            return 1
         else if @near_mines[x][y] == 0
             @set_class(x, y, "empty")
         else
@@ -123,8 +132,11 @@ class Minefield
         list = [[start_x, start_y]]
         while list.length > 0
             [x, y] = list.pop()
-            if @press(x, y) < 0
+            status = @press(x, y)
+            if status < 0
                 return -1
+            if status == 0
+                @remaining -= 1
             if @near_mines[x][y] <= @near_flags[x][y]
                 for [nx, ny] in @near_positions(x, y)
                     td_class = @get_class(nx, ny)
@@ -147,6 +159,9 @@ class Minefield
                         @set_class(x, y, "empty")
                     else
                         @set_class(x, y, "near-" + @near_mines[x][y])
+
+    gameclear: ->
+        # TODO
 
     stringify: ->
         JSON.stringify(@mines)
