@@ -84,6 +84,10 @@ class Minefield
         if @game_status == 1
             @start(x, y)
 
+        td_class = @get_class(x, y)
+        if td_class != null
+            return
+
         if @expand(x, y) < 0
             @gameover(x, y)
 
