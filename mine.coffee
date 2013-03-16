@@ -47,12 +47,15 @@ class Minefield
             x = Math.floor(Math.random() * @columns)
             y = Math.floor(Math.random() * @rows)
             if @mines[x][y] < @max_mines
+                n_max = @max_mines - @mines[x][y]
+                n_max = Math.min(n_max, @num_mines - num_mine_created)
+                n = Math.floor(Math.random() * n_max) + 1
                 if @mines[x][y] == 0
-                    @remaining -= 1
-                @mines[x][y] += 1
+                    @remaining -= n
+                @mines[x][y] += n
                 for [nx, ny] in @near_positions(x, y)
-                    @near_mines[nx][ny] += 1
-                num_mine_created += 1
+                    @near_mines[nx][ny] += n
+                num_mine_created += n
         @game_status = 0
 
     get_class: (x, y) ->
