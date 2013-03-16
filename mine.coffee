@@ -7,8 +7,6 @@ class Minefield
         @table = document.createElement('table')
         @table.setAttribute("class", "minetable")
 
-        @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
-        @near_mines = ((0 for y in [1..@rows]) for x in [1..@columns])
         @flags = ((0 for y in [1..@rows]) for x in [1..@columns])
         @near_flags = ((0 for y in [1..@rows]) for x in [1..@columns])
 
@@ -38,6 +36,9 @@ class Minefield
         @window.appendChild(@table)
 
     init_mines: ->
+        @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
+        @near_mines = ((0 for y in [1..@rows]) for x in [1..@columns])
+
         num_mine_created = 0
         while num_mine_created < @num_mines
             # infinite loop with probability 0
