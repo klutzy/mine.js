@@ -126,26 +126,29 @@ class Minefield
             return -1
         else if @get_class(x, y) != null
             return 1
-        else if @near_mines[x][y] == 0
+
+        @remaining -= 1
+
+        if @near_mines[x][y] == 0
             @set_class(x, y, "empty")
         else
             @set_class(x, y, "near-" + @near_mines[x][y])
         return 0
 
     expand: (start_x, start_y) ->
+        if @press(start_x, start_y) < 0
+            return -1
+
         list = [[start_x, start_y]]
         while list.length > 0
             [x, y] = list.pop()
-            status = @press(x, y)
-            if status < 0
-                return -1
-            if status == 0
-                @remaining -= 1
-            if @near_mines[x][y] <= @near_flags[x][y]
+            if @near_mines[x][y] == 0
                 for [nx, ny] in @near_positions(x, y)
                     td_class = @get_class(nx, ny)
                     if td_class == null
                         list.push([nx, ny])
+                        if @press(nx, ny) < 0
+                            return -1
         return 0
 
     gameover: (fail_x, fail_y) ->
