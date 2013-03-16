@@ -44,7 +44,7 @@ class Minefield
             x = Math.floor(Math.random() * @columns)
             y = Math.floor(Math.random() * @rows)
             if @mines[x][y] < @max_mines
-                @mines[x][y] = 1
+                @mines[x][y] += 1
                 for [nx, ny] in @near_positions(x, y)
                     @near_mines[nx][ny] += 1
                 num_mine_created += 1
