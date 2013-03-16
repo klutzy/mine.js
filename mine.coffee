@@ -149,6 +149,8 @@ class Minefield
         for y in [0..(@rows-1)]
             for x in [0..(@columns-1)]
                 if @mines[x][y] > 0
+                    if @get_class(x, y) == "flag"
+                        continue
                     @set_class(x, y, "mine")
                     if fail_x == x and fail_y == y
                         @set_class(x, y, "mine-exploded")
