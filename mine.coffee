@@ -99,8 +99,6 @@ class Minefield
             @start(x, y)
 
         td_class = @get_class(x, y)
-        if td_class != null
-            return
 
         if @expand(x, y) < 0
             @gameover(x, y)
@@ -154,6 +152,16 @@ class Minefield
             return -1
 
         list = [[start_x, start_y]]
+        start_mines = @near_mines[start_x][start_y]
+        start_flags = @near_flags[start_x][start_y]
+        if td_class != null and start_mines == start_flags
+            for [nx, ny] in @near_positions(start_x, start_y)
+                td_class = @get_class(nx, ny)
+                if td_class == null
+                    list.push([nx, ny])
+                    if @press(nx, ny) < 0
+                        return -1
+
         while list.length > 0
             [x, y] = list.pop()
             if @near_mines[x][y] == 0
