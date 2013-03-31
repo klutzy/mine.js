@@ -50,7 +50,6 @@ class Minefield
 
     init_mines: ->
         @mines = @new_table()
-        @near_mines = @new_table()
 
         @remaining = @rows * @columns
 
@@ -66,10 +65,17 @@ class Minefield
                 if @mines[x][y] == 0
                     @remaining -= n
                 @mines[x][y] += n
-                for [nx, ny] in @near_positions(x, y)
-                    @near_mines[nx][ny] += n
                 num_mine_created += n
+        @near_mines = @generate_near_mines(@mines)
         @game_status = 1
+
+    generate_near_mines: (mines) ->
+        near_mines = @new_table()
+        for x in [0..(@columns-1)]
+            for y in [0..(@rows-1)]
+                for [nx, ny] in @near_positions(x, y)
+                    near_mines[nx][ny] += mines[x][y]
+        near_mines
 
     shift_table: (table, dx, dy) ->
         new_table = @new_table()
@@ -136,7 +142,7 @@ class Minefield
             for ny in [0..(@rows-1)]
                 if @mines[nx][ny] == 0
                     @mines = @shift_table(@mines, x - nx, y - ny)
-                    @near_mines = @shift_table(@near_mines, x - nx, y - ny)
+                    @near_mines = @generate_near_mines(@mines)
 
     flag: (x, y) ->
         td_class = @get_class(x, y)
