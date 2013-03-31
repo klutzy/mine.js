@@ -69,7 +69,17 @@ class Minefield
                 for [nx, ny] in @near_positions(x, y)
                     @near_mines[nx][ny] += n
                 num_mine_created += n
-        @game_status = 0
+        @game_status = 1
+
+    shift_table: (table, dx, dy) ->
+        new_table = @new_table()
+        for ny in [0..(@rows-1)]
+            for nx in [0..(@columns-1)]
+                new_x = (nx + dx + 2*@columns) % @columns
+                new_y = (ny + dy + 2*@rows) % @rows
+                new_table[new_x][new_y] = table[nx][ny]
+
+        new_table
 
     get_class: (x, y) ->
         td_class = @tds[x][y].getAttribute("class")
@@ -112,10 +122,21 @@ class Minefield
         if @game_status < 0
             return
 
+        if @game_status == 1
+            @game_status = 0
+
         @flag(x, y)
 
     start: (x, y) ->
-        # TODO: first click should never die
+        @game_status = 0
+        if @mines[x][y] == 0
+            return
+
+        for nx in [0..(@columns-1)]
+            for ny in [0..(@rows-1)]
+                if @mines[nx][ny] == 0
+                    @mines = @shift_table(@mines, x - nx, y - ny)
+                    @near_mines = @shift_table(@near_mines, x - nx, y - ny)
 
     flag: (x, y) ->
         td_class = @get_class(x, y)
