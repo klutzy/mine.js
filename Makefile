@@ -1,4 +1,4 @@
-ALL=mine.js mine.css
+ALL=mine.js mine.css mine-win98.css
 
 .PHONY: all
 all: $(ALL)

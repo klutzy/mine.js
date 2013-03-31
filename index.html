@@ -3,25 +3,79 @@
 
 <head>
 <title>Minesweeper</title>
+
 <meta charset="utf-8">
 <link href="mine.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="win98.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="mine-win98.css" media="screen" rel="stylesheet" type="text/css" />
+
 </head>
 
 <body>
 
-<ul>
-<li onclick="minefield.init_board(9, 9, 10)">Beginner</li>
-<li onclick="minefield.init_board(16, 16, 40)">Intermediate</li>
-<li onclick="minefield.init_board(30, 16, 99)">Expert</li>
-<li onclick="minefield.init_board(30, 16, 120, 2)">2-Mine</li>
-<li onclick="minefield.init_board(30, 16, 150, 3)">3-Mine</li>
-<li onclick="minefield.reset_board()">Reset</li>
-</ul>
+<div class="windows windows-98">
 
-<div id="mine-area"></div>
+<div class="window has-menu mine-window">
+    <div class="title-bar">
+        <div class="title-icon"></div>
+        <div class="title">Minesweeper</div>
+        <div class="title-button-group">
+            <div class="title-button minimize"></div>
+            <div class="title-button maximize disabled"></div>
+            <div class="title-button close"></div>
+        </div>
+    </div>
+    <ul class="menu-bar">
+    <li>Game
+    <ul>
+    <li onclick="minefield.init_board(30, 16, 99)">Hard</li>
+    <li onclick="minefield.init_board(30, 16, 120, 2)">Harder</li>
+    <li onclick="minefield.init_board(30, 16, 150, 3)">Hardest</li>
+    </ul>
+    </li>
+    </ul>
 
+    <div class="window-content">
+    <div id="mine-head-area">
+        <div id="mine-counter">
+            <div class="digit digit-0"></div>
+            <div class="digit digit-0"></div>
+            <div class="digit digit-0"></div>
+        </div>
+        <div id="mine-reset-button"></div>
+        <div id="mine-timer">
+            <div class="digit digit-0"></div>
+            <div class="digit digit-2"></div>
+            <div class="digit digit-2"></div>
+        </div>
+    </div>
+    <div id="mine-area">
+    </div>
+    </div>
+</div>
+
+</div>
+
+
+<script src="vendor/jquery.min.js"></script>
+<script src="vendor/jquery-ui.min.js"></script>
+<script src="jquery.mswin.js"></script>
+<script src="jquery.mswin.listview.js"></script>
+<script src="jquery.mswin.menu.js"></script>
 <script src="mine.js"></script>
+
 <script>
+$('.window').window();
+$('.listview').listview();
+$('.desktop-listview').listview();
+$('.menu-bar').menubar();
+$('.taskbar ul.start').menubar({
+    position_toplevel: {
+        my: "left bottom",
+        at: "left top",
+    },
+});
+
 var mine_area = document.getElementById("mine-area");
 var minefield = new window.Minefield(mine_area);
 minefield.init_board(30, 16, 120, 2);
