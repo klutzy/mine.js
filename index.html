@@ -9,14 +9,22 @@
 
 <body>
 
+<ul>
+<li onclick="minefield.init_board(9, 9, 10)">Beginner</li>
+<li onclick="minefield.init_board(16, 16, 40)">Intermediate</li>
+<li onclick="minefield.init_board(30, 16, 99)">Expert</li>
+<li onclick="minefield.init_board(30, 16, 120, 2)">2-Mine</li>
+<li onclick="minefield.init_board(30, 16, 150, 3)">3-Mine</li>
+<li onclick="minefield.reset_board()">Reset</li>
+</ul>
+
 <div id="mine-area"></div>
 
 <script src="mine.js"></script>
 <script>
 var mine_area = document.getElementById("mine-area");
-var minefield = new window.Minefield(mine_area, 40, 20, 40);
-minefield.init_board();
-minefield.init_mines();
+var minefield = new window.Minefield(mine_area);
+minefield.init_board(30, 16, 120, 2);
 </script>
 
 </body>

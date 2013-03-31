@@ -1,9 +1,18 @@
 class Minefield
-    constructor: (@window, @columns, @rows, @num_mines, @max_mines=1) ->
+    constructor: (@window) ->
         # status: 0 if started, -1 if dead, -2 cleared, 1 if ready_to_start
         @game_status = -1
+        @table = null
 
-    init_board: ->
+    init_board: (@columns, @rows, @num_mines, @max_mines=1) ->
+        @reset_board()
+
+    reset_board: ->
+        if @table
+            @window.removeChild(@table)
+            @game_status = -1
+            @table = null
+
         @table = document.createElement('table')
         @table.setAttribute("class", "minetable")
 
@@ -34,6 +43,8 @@ class Minefield
             @table.appendChild(tr)
 
         @window.appendChild(@table)
+
+        @init_mines()
 
     init_mines: ->
         @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
