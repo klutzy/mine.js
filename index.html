@@ -36,20 +36,22 @@
     </ul>
 
     <div class="window-content">
-    <div id="mine-head-area">
-        <div id="mine-counter">
+    <div class="mine-head-area">
+        <div class="mine-counter">
             <div class="digit digit-0"></div>
             <div class="digit digit-0"></div>
             <div class="digit digit-0"></div>
         </div>
-        <div id="mine-reset-button"></div>
-        <div id="mine-timer">
+        <div class="mine-reset-button" onclick="minefield.reset_board()">
+            <div class="mine-reset-button-inner"></div>
+        </div>
+        <div class="mine-timer">
             <div class="digit digit-0"></div>
             <div class="digit digit-2"></div>
             <div class="digit digit-2"></div>
         </div>
     </div>
-    <div id="mine-area">
+    <div id="mine-area" class="mine-area">
     </div>
     </div>
 </div>
