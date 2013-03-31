@@ -4,6 +4,9 @@ class Minefield
         @game_status = -1
         @table = null
 
+    new_table: ->
+        ((0 for y in [1..@rows]) for x in [1..@columns])
+
     init_board: (@columns, @rows, @num_mines, @max_mines=1) ->
         @reset_board()
 
@@ -16,10 +19,9 @@ class Minefield
         @table = document.createElement('table')
         @table.setAttribute("class", "minetable")
 
-        @flags = ((0 for y in [1..@rows]) for x in [1..@columns])
-        @near_flags = ((0 for y in [1..@rows]) for x in [1..@columns])
-
-        @tds = ((null for y in [1..@rows]) for x in [1..@columns])
+        @flags = @new_table()
+        @near_flags = @new_table()
+        @tds = @new_table()
 
         for y in [0..(@rows-1)]
             tr = document.createElement('tr')
@@ -47,8 +49,8 @@ class Minefield
         @init_mines()
 
     init_mines: ->
-        @mines = ((0 for y in [1..@rows]) for x in [1..@columns])
-        @near_mines = ((0 for y in [1..@rows]) for x in [1..@columns])
+        @mines = @new_table()
+        @near_mines = @new_table()
 
         @remaining = @rows * @columns
 
