@@ -78,6 +78,8 @@ $('.taskbar ul.start').menubar({
     },
 });
 
+var update_counter = null;
+
 var mine_area = document.getElementById("mine-area");
 var minefield = new window.Minefield(mine_area, function(status) {
     var smile = $(".mine-reset-button .mine-reset-button-inner");
@@ -88,10 +90,35 @@ var minefield = new window.Minefield(mine_area, function(status) {
     if (status === -2) {
         bg_pos = "-51px 0";
     }
+    if (status === 1) {
+        var num_counter = minefield.num_mines - minefield.num_flags;
+        var counter_obj = $(".mine-counter");
+        update_counter(num_counter, counter_obj);
+    }
     smile.css({
         "background-position": bg_pos,
     });
 });
+
+update_counter = function(val, counter) {
+    var digits = [
+        Math.floor(val / 100),
+        Math.floor(val / 10) % 10,
+        val % 10
+    ];
+    for (var i = 0; i < 3; i++) {
+        var d = digits[i];
+        var child = $(counter.children()[i]);
+        child.removeClass();
+        child.addClass("digit digit-" + d);
+    }
+};
+minefield.on_rclick_func = function(x, y) {
+    var num_counter = minefield.num_mines - minefield.num_flags;
+    var counter_obj = $(".mine-counter");
+    update_counter(num_counter, counter_obj);
+};
+
 minefield.init_board(30, 16, 120, 2);
 </script>
 
