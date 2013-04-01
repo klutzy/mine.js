@@ -1,0 +1,104 @@
+.mine-window {
+  width: 502px;
+  height: 363px;
+  position: absolute;
+  top: 0;
+  left: auto;
+  right: auto; }
+
+.window-content .mine-head-area {
+  margin: 4px;
+  width: 482px;
+  height: 38px;
+  border-top: 2px solid gray;
+  border-left: 2px solid gray;
+  border-bottom: 2px solid white;
+  border-right: 2px solid white;
+  position: relative; }
+  .window-content .mine-head-area .mine-counter, .window-content .mine-head-area .mine-timer {
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    width: 39px;
+    height: 23px; }
+    .window-content .mine-head-area .mine-counter .digit, .window-content .mine-head-area .mine-timer .digit {
+      background-image: url(digit.png);
+      width: 13px;
+      height: 23px;
+      float: left; }
+      .window-content .mine-head-area .mine-counter .digit.digit-0, .window-content .mine-head-area .mine-timer .digit.digit-0 {
+        background-image: url(digit.png);
+        background-position: 0px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-1, .window-content .mine-head-area .mine-timer .digit.digit-1 {
+        background-image: url(digit.png);
+        background-position: -13px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-2, .window-content .mine-head-area .mine-timer .digit.digit-2 {
+        background-image: url(digit.png);
+        background-position: -26px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-3, .window-content .mine-head-area .mine-timer .digit.digit-3 {
+        background-image: url(digit.png);
+        background-position: -39px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-4, .window-content .mine-head-area .mine-timer .digit.digit-4 {
+        background-image: url(digit.png);
+        background-position: -52px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-5, .window-content .mine-head-area .mine-timer .digit.digit-5 {
+        background-image: url(digit.png);
+        background-position: -65px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-6, .window-content .mine-head-area .mine-timer .digit.digit-6 {
+        background-image: url(digit.png);
+        background-position: -78px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-7, .window-content .mine-head-area .mine-timer .digit.digit-7 {
+        background-image: url(digit.png);
+        background-position: -91px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-8, .window-content .mine-head-area .mine-timer .digit.digit-8 {
+        background-image: url(digit.png);
+        background-position: -104px 0; }
+      .window-content .mine-head-area .mine-counter .digit.digit-9, .window-content .mine-head-area .mine-timer .digit.digit-9 {
+        background-image: url(digit.png);
+        background-position: -117px 0; }
+  .window-content .mine-head-area .mine-counter {
+    position: absolute;
+    top: 6px;
+    left: 6px; }
+  .window-content .mine-head-area .mine-timer {
+    position: absolute;
+    top: 6px;
+    right: 6px; }
+  .window-content .mine-head-area .mine-reset-button {
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    border-bottom: 2px solid gray;
+    border-right: 2px solid gray;
+    position: absolute;
+    width: 17px;
+    height: 17px;
+    padding: 2px;
+    top: 8px;
+    left: 225px; }
+    .window-content .mine-head-area .mine-reset-button:active {
+      border-top: 2px solid gray;
+      border-left: 2px solid gray;
+      border-bottom: 2px solid white;
+      border-right: 2px solid white; }
+    .window-content .mine-head-area .mine-reset-button .mine-reset-button-inner {
+      width: 17px;
+      height: 17px;
+      background-image: url(face.png);
+      background-position: 0 0; }
+
+.window-content .mine-area {
+  margin: 4px;
+  width: 480px;
+  height: 256px;
+  border-top: 3px solid gray;
+  border-left: 3px solid gray;
+  border-bottom: 3px solid white;
+  border-right: 3px solid white; }
+
+.mine-window .title-bar .title-icon {
+  background-image: url(mine_icon.png); }
+
+.inner {
+  width: 480px;
+  height: 256px; }
