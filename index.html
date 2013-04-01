@@ -18,11 +18,14 @@
 <li onclick="minefield.reset_board()">Reset</li>
 </ul>
 
+<div id="mine-remaining">-1</div>
 <div id="mine-status"></div>
 <div id="mine-area"></div>
 
 <script src="mine.js"></script>
 <script>
+var minefield;
+var mine_counter = -1;
 var mine_area = document.getElementById("mine-area");
 var on_game_status_changed = function(status) {
     var status_area = document.getElementById("mine-status");
@@ -32,6 +35,8 @@ var on_game_status_changed = function(status) {
     }
     if (status === 1) {
         msg = "ready";
+        var counter = document.getElementById("mine-remaining");
+        counter.innerHTML = minefield.num_mines;
     }
     if (status === -1) {
         msg = "game over";
@@ -40,8 +45,14 @@ var on_game_status_changed = function(status) {
         msg = "game cleared";
     }
     status_area.innerHTML = msg;
-}
-var minefield = new window.Minefield(mine_area, on_game_status_changed);
+};
+var on_rclick = function(x, y) {
+    var counter = document.getElementById("mine-remaining");
+    counter.innerHTML = minefield.num_mines - minefield.num_flags;
+};
+
+minefield = new window.Minefield(mine_area, on_game_status_changed);
+minefield.on_rclick_func = on_rclick;
 minefield.init_board(30, 16, 120, 2);
 </script>
 
