@@ -8,6 +8,8 @@
       this.game_status_changed_func = game_status_changed_func != null ? game_status_changed_func : null;
       this.game_status = -1;
       this.table = null;
+      this.on_click_func = null;
+      this.on_rclick_func = null;
     }
 
     Minefield.prototype.new_table = function() {
@@ -46,6 +48,7 @@
       }
       this.table = document.createElement('table');
       this.table.setAttribute("class", "minetable");
+      this.num_flags = 0;
       this.flags = this.new_table();
       this.near_flags = this.new_table();
       this.tds = this.new_table();
@@ -185,6 +188,9 @@
       if (this.remaining === 0) {
         this.gameclear();
       }
+      if (this.on_click_func) {
+        this.on_click_func(x, y);
+      }
       if (old_game_status !== this.game_status) {
         return this.on_game_status_changed();
       }
@@ -201,6 +207,9 @@
         this.game_status = 0;
       }
       this.flag(x, y);
+      if (this.on_rclick_func) {
+        this.on_rclick_func(x, y);
+      }
       if (old_game_status !== this.game_status) {
         return this.on_game_status_changed();
       }
@@ -250,6 +259,7 @@
       if (this.flags[x][y] === this.max_mines) {
         n = -this.flags[x][y];
       }
+      this.num_flags += n;
       this.flags[x][y] += n;
       _ref = this.near_positions(x, y);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
