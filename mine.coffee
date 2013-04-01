@@ -63,7 +63,7 @@ class Minefield
                 n_max = Math.min(n_max, @num_mines - num_mine_created)
                 n = Math.floor(Math.random() * n_max) + 1
                 if @mines[x][y] == 0
-                    @remaining -= n
+                    @remaining -= 1
                 @mines[x][y] += n
                 num_mine_created += n
         @near_mines = @generate_near_mines(@mines)
