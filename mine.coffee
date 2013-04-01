@@ -1,5 +1,5 @@
 class Minefield
-    constructor: (@window) ->
+    constructor: (@window, @game_status_changed_func=null) ->
         # status: 0 if started, -1 if dead, -2 cleared, 1 if ready_to_start
         @game_status = -1
         @table = null
@@ -47,6 +47,7 @@ class Minefield
         @window.appendChild(@table)
 
         @init_mines()
+        @on_game_status_changed() # 0 -> 1
 
     init_mines: ->
         @mines = @new_table()
@@ -111,6 +112,7 @@ class Minefield
         ret
 
     on_click: (x, y) ->
+        old_game_status = @game_status
         if @game_status < 0
             return
         if @game_status == 1
@@ -124,7 +126,11 @@ class Minefield
         if @remaining == 0
             @gameclear()
 
+        if old_game_status != @game_status
+            @on_game_status_changed()
+
     on_rclick: (x, y) ->
+        old_game_status = @game_status
         if @game_status < 0
             return
 
@@ -132,6 +138,13 @@ class Minefield
             @game_status = 0
 
         @flag(x, y)
+
+        if old_game_status != @game_status
+            @on_game_status_changed()
+
+    on_game_status_changed: ->
+        if @game_status_changed_func
+            @game_status_changed_func(@game_status)
 
     start: (x, y) ->
         @game_status = 0
@@ -223,7 +236,6 @@ class Minefield
 
     gameclear: ->
         @game_status = -2
-        # TODO
 
     stringify: ->
         JSON.stringify(@mines)
