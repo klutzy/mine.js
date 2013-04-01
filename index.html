@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Minesweeper</title>
+<meta charset="utf-8">
+<link href="mine.css" media="screen" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+<ul>
+<li onclick="minefield.init_board(9, 9, 10)">Beginner</li>
+<li onclick="minefield.init_board(16, 16, 40)">Intermediate</li>
+<li onclick="minefield.init_board(30, 16, 99)">Expert</li>
+<li onclick="minefield.init_board(30, 16, 120, 2)">2-Mine</li>
+<li onclick="minefield.init_board(30, 16, 150, 3)">3-Mine</li>
+<li onclick="minefield.reset_board()">Reset</li>
+</ul>
+
+<div id="mine-remaining">-1</div>
+<div id="mine-status"></div>
+<div id="mine-area"></div>
+
+<script src="mine.js"></script>
+<script>
+var minefield;
+var mine_counter = -1;
+var mine_area = document.getElementById("mine-area");
+var on_game_status_changed = function(status) {
+    var status_area = document.getElementById("mine-status");
+    var msg = "??";
+    if (status === 0) {
+        msg = "playing";
+    }
+    if (status === 1) {
+        msg = "ready";
+        var counter = document.getElementById("mine-remaining");
+        counter.innerHTML = minefield.num_mines;
+    }
+    if (status === -1) {
+        msg = "game over";
+    }
+    if (status === -2) {
+        msg = "game cleared";
+    }
+    status_area.innerHTML = msg;
+};
+var on_rclick = function(x, y) {
+    var counter = document.getElementById("mine-remaining");
+    counter.innerHTML = minefield.num_mines - minefield.num_flags;
+};
+
+minefield = new window.Minefield(mine_area, on_game_status_changed);
+minefield.on_rclick_func = on_rclick;
+minefield.init_board(30, 16, 120, 2);
+</script>
+
+</body>
+
+</html>
+

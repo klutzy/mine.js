@@ -1,0 +1,64 @@
+table.minetable {
+    border-spacing: 0;
+    * {
+        border: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    @mixin mine-button($m, $n) {
+        background-image: url(mine.png);
+        background-position: (-16px*$n) (-16px*$m);
+        &:active {
+            @if $m == 1 and $n == 0 {
+                background-image: url(mine.png);
+                background-position: (-16px*0) (-16px*2);
+            }
+            @else {
+                background-image: url(mine.png);
+                background-position: (-16px*$n) (-16px*$m);
+            }
+        }
+    }
+
+    td {
+        width: 16px;
+        height: 16px;
+
+        @include mine-button(1, 0);
+
+        &.mine-wrong {
+            @include mine-button(0, 0);
+        }
+
+        @for $i from 1 through 3 {
+            &.mine-#{$i} {
+                @include mine-button(0, $i);
+            }
+            &.flag-#{$i} {
+                @include mine-button(1, $i);
+            }
+
+        }
+
+        &.mine-exploded {
+            @include mine-button(0, 5);
+        }
+
+        &.empty {
+            @include mine-button(2, 0);
+        }
+
+        @for $i from 1 through 9 {
+            &.near-#{$i} {
+                @include mine-button(2, $i);
+            }
+        }
+        @for $i from 10 through 19 {
+            &.near-#{$i} {
+                @include mine-button(3, $i - 10);
+            }
+        }
+
+    }
+}
