@@ -79,7 +79,19 @@ $('.taskbar ul.start').menubar({
 });
 
 var mine_area = document.getElementById("mine-area");
-var minefield = new window.Minefield(mine_area);
+var minefield = new window.Minefield(mine_area, function(status) {
+    var smile = $(".mine-reset-button .mine-reset-button-inner");
+    var bg_pos = "0 0";
+    if (status === -1) {
+        bg_pos = "-17px 0";
+    }
+    if (status === -2) {
+        bg_pos = "-51px 0";
+    }
+    smile.css({
+        "background-position": bg_pos,
+    });
+});
 minefield.init_board(30, 16, 120, 2);
 </script>
 
