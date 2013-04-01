@@ -18,12 +18,30 @@
 <li onclick="minefield.reset_board()">Reset</li>
 </ul>
 
+<div id="mine-status"></div>
 <div id="mine-area"></div>
 
 <script src="mine.js"></script>
 <script>
 var mine_area = document.getElementById("mine-area");
-var minefield = new window.Minefield(mine_area);
+var on_game_status_changed = function(status) {
+    var status_area = document.getElementById("mine-status");
+    var msg = "??";
+    if (status === 0) {
+        msg = "playing";
+    }
+    if (status === 1) {
+        msg = "ready";
+    }
+    if (status === -1) {
+        msg = "game over";
+    }
+    if (status === -2) {
+        msg = "game cleared";
+    }
+    status_area.innerHTML = msg;
+}
+var minefield = new window.Minefield(mine_area, on_game_status_changed);
 minefield.init_board(30, 16, 120, 2);
 </script>
 
