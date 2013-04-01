@@ -47,8 +47,8 @@
         </div>
         <div class="mine-timer">
             <div class="digit digit-0"></div>
-            <div class="digit digit-2"></div>
-            <div class="digit digit-2"></div>
+            <div class="digit digit-0"></div>
+            <div class="digit digit-0"></div>
         </div>
     </div>
     <div id="mine-area" class="mine-area">
@@ -78,6 +78,12 @@ $('.taskbar ul.start').menubar({
     },
 });
 
+var update_counter = null;
+var update_timer = null;
+
+var timer_val = 0;
+var timer_id = null;
+
 var mine_area = document.getElementById("mine-area");
 var minefield = new window.Minefield(mine_area, function(status) {
     var smile = $(".mine-reset-button .mine-reset-button-inner");
@@ -91,7 +97,56 @@ var minefield = new window.Minefield(mine_area, function(status) {
     smile.css({
         "background-position": bg_pos,
     });
+
+    if (status === 0) {
+        timer_id = window.setInterval(update_timer, 1 * 1000);
+    }
+    if (status < 0 || status === 1) {
+        window.clearInterval(timer_id);
+        if (status === 1) {
+            var num_counter = minefield.num_mines - minefield.num_flags;
+            var counter_obj = $(".mine-counter");
+            update_counter(num_counter, counter_obj);
+
+            timer_val = 0;
+            timer_id = null;
+            var timer_obj = $(".mine-timer");
+            update_counter(0, timer_obj);
+        }
+    }
 });
+
+update_timer = function() {
+    timer_val += 1;
+    var timer_obj = $(".mine-timer");
+    update_counter(timer_val, timer_obj);
+}
+
+update_counter = function(val, counter) {
+    if (val > 999) {
+        val = 999;
+    }
+    if (val < 0) {
+        val = 0;
+    }
+    var digits = [
+        Math.floor(val / 100),
+        Math.floor(val / 10) % 10,
+        val % 10
+    ];
+    for (var i = 0; i < 3; i++) {
+        var d = digits[i];
+        var child = $(counter.children()[i]);
+        child.removeClass();
+        child.addClass("digit digit-" + d);
+    }
+};
+minefield.on_rclick_func = function(x, y) {
+    var num_counter = minefield.num_mines - minefield.num_flags;
+    var counter_obj = $(".mine-counter");
+    update_counter(num_counter, counter_obj);
+};
+
 minefield.init_board(30, 16, 120, 2);
 </script>
 
