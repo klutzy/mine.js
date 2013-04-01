@@ -3,6 +3,8 @@ class Minefield
         # status: 0 if started, -1 if dead, -2 cleared, 1 if ready_to_start
         @game_status = -1
         @table = null
+        @on_click_func = null
+        @on_rclick_func = null
 
     new_table: ->
         ((0 for y in [1..@rows]) for x in [1..@columns])
@@ -18,6 +20,8 @@ class Minefield
 
         @table = document.createElement('table')
         @table.setAttribute("class", "minetable")
+
+        @num_flags = 0
 
         @flags = @new_table()
         @near_flags = @new_table()
@@ -126,6 +130,8 @@ class Minefield
         if @remaining == 0
             @gameclear()
 
+        if @on_click_func
+            @on_click_func(x, y)
         if old_game_status != @game_status
             @on_game_status_changed()
 
@@ -139,6 +145,8 @@ class Minefield
 
         @flag(x, y)
 
+        if @on_rclick_func
+            @on_rclick_func(x, y)
         if old_game_status != @game_status
             @on_game_status_changed()
 
@@ -166,6 +174,7 @@ class Minefield
         if @flags[x][y] == @max_mines
             n = -@flags[x][y]
 
+        @num_flags += n
         @flags[x][y] += n
         for [nx, ny] in @near_positions(x, y)
             @near_flags[nx][ny] += n
