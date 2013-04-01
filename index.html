@@ -123,6 +123,12 @@ update_timer = function() {
 }
 
 update_counter = function(val, counter) {
+    if (val > 999) {
+        val = 999;
+    }
+    if (val < 0) {
+        val = 0;
+    }
     var digits = [
         Math.floor(val / 100),
         Math.floor(val / 10) % 10,
