@@ -31,7 +31,7 @@ table.minetable {
             @include mine-button(0, 0);
         }
 
-        @for $i from 1 through 3 {
+        @for $i from 1 through 4 {
             &.mine-#{$i} {
                 @include mine-button(0, $i);
             }
@@ -49,16 +49,15 @@ table.minetable {
             @include mine-button(2, 0);
         }
 
-        @for $i from 1 through 9 {
-            &.near-#{$i} {
-                @include mine-button(2, $i);
+        @for $j from 0 through 2 {
+            @for $i from 0 through 9 {
+                $ji: $j*10 + $i;
+                @if $ji > 0 {
+                    &.near-#{$ji} {
+                        @include mine-button($j+2, $i);
+                    }
+                }
             }
         }
-        @for $i from 10 through 19 {
-            &.near-#{$i} {
-                @include mine-button(3, $i - 10);
-            }
-        }
-
     }
 }
