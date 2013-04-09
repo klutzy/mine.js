@@ -172,7 +172,7 @@
     };
 
     Minefield.prototype.on_click = function(x, y) {
-      var old_game_status, td_class;
+      var old_game_status;
 
       old_game_status = this.game_status;
       if (this.game_status < 0) {
@@ -181,7 +181,6 @@
       if (this.game_status === 1) {
         this.start(x, y);
       }
-      td_class = this.get_class(x, y);
       if (this.expand(x, y) < 0) {
         this.gameover(x, y);
       }
@@ -291,13 +290,17 @@
     Minefield.prototype.expand = function(start_x, start_y) {
       var list, nx, ny, start_flags, start_mines, td_class, x, y, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3, _ref4;
 
+      td_class = this.get_class(start_x, start_y);
+      if (td_class !== null && /^flag/.exec(td_class)) {
+        return 1;
+      }
       if (this.press(start_x, start_y) < 0) {
         return -1;
       }
       list = [[start_x, start_y]];
       start_mines = this.near_mines[start_x][start_y];
       start_flags = this.near_flags[start_x][start_y];
-      if (td_class !== null && start_mines === start_flags) {
+      if (start_mines === start_flags) {
         _ref = this.near_positions(start_x, start_y);
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           _ref1 = _ref[_i], nx = _ref1[0], ny = _ref1[1];
